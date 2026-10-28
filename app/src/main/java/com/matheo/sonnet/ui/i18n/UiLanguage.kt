@@ -118,7 +118,7 @@ Langue de l’interface|Interface language|Idioma de la interfaz|Sprache der Obe
         val system = Locale.getDefault().language.take(2).lowercase(Locale.ROOT)
         val available = languages.map { it.code }
         current = when {
-            saved in available -> saved!!
+            saved != null && saved in available -> saved
             system in available -> system
             else -> "fr"
         }
