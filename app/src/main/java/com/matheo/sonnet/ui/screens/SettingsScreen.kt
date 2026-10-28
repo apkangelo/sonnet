@@ -61,13 +61,17 @@ import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.ViewQuilt
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
+import com.matheo.sonnet.ui.i18n.Text
+import com.matheo.sonnet.ui.i18n.UiLanguage
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -77,6 +81,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -91,6 +96,28 @@ import com.matheo.sonnet.data.WebPrefs
 import com.matheo.sonnet.jellyfin.DeviceProfile
 import com.matheo.sonnet.ui.theme.Accents
 import kotlinx.coroutines.launch
+
+@Composable
+private fun LanguageSelector() {
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+        Text("Langue de l’interface", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
+        Box {
+            OutlinedButton(onClick = { expanded = true }) {
+                Text(UiLanguage.currentLabel())
+            }
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                UiLanguage.languages.forEach { language ->
+                    DropdownMenuItem(
+                        text = { Text(language.label) },
+                        onClick = { UiLanguage.set(context, language.code); expanded = false },
+                    )
+                }
+            }
+        }
+    }
+}
 
 private data class Link(val label: String, val route: String, val icon: ImageVector, val hint: String? = null)
 
