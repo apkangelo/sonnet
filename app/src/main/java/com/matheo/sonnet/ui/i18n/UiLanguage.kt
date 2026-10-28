@@ -134,8 +134,10 @@ Langue de l’interface|Interface language|Idioma de la interfaz|Sprache der Obe
     fun currentLabel(): String = languages.firstOrNull { it.code == current }?.label ?: "Français"
 
     fun translate(text: String): String {
-        val index = languages.indexOfFirst { it.code == current }.coerceAtLeast(0)
-        return translations[text]?.getOrNull(index) ?: text
+        if (current == "fr") return text
+        val index = languages.indexOfFirst { it.code == current }
+        if (index <= 0) return text
+        return translations[text]?.getOrNull(index - 1) ?: text
     }
 }
 
