@@ -180,6 +180,7 @@ fun SettingsScreen(onOpenRoute: (String) -> Unit, onOpenPlayerSettings: () -> Un
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        item { LanguageSelector() }
         item {
             Text("Réglages", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground)
             Text(
