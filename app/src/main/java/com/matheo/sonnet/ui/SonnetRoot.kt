@@ -37,7 +37,8 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.NavigationRailItemDefaults
-import androidx.compose.material3.Text
+import com.matheo.sonnet.ui.i18n.Text
+import com.matheo.sonnet.ui.i18n.UiLanguage
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -79,7 +80,9 @@ fun SonnetRoot(web: WebHost) {
     var dest by rememberSaveable { mutableStateOf(Dest.Home) }
     val serverUrl by SettingsRepository.serverUrl.collectAsState(initial = null)
     val bridgeUrl by SettingsRepository.bridgeUrl.collectAsState(initial = null)
-    val activity = LocalContext.current.findActivity()
+    val context = LocalContext.current
+    val activity = context.findActivity()
+    LaunchedEffect(Unit) { UiLanguage.init(context) }
 
     LaunchedEffect(serverUrl) { serverUrl?.let { web.loadJellyfin(it) } }
     LaunchedEffect(dest, bridgeUrl) {
