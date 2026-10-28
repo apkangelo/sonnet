@@ -1,0 +1,29 @@
+name: Verify native language localization
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/src/main/**"
+      - "app/build.gradle.kts"
+      - "build.gradle.kts"
+      - "gradle/**"
+      - ".github/workflows/i18n-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android-debug-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Build Android debug APK
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
